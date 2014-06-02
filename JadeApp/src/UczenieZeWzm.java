@@ -83,7 +83,7 @@ public class UczenieZeWzm {
                 nr_akcji_Qmax = j;
             }
         }
-
+//a-nr akcji, s-stan
         double nagroda = -1;
         while ((stan.k != s.liczba_kolumn-1)&&(nr_kroku < liczba_krokow_max)&&(nagroda <= 0))
         {
@@ -93,10 +93,18 @@ public class UczenieZeWzm {
             int nr_akcji_wyb = 0;
             //int nr_akcji_wyb = ...                                // wybór najlepszej znanej akcji
             //..................................................    // np. met. epsylon-zachłanną lub proporcjonalnie do użyteczności (wartości Q)
-            //..................................................
-            //..................................................
-            //..................................................
-            //..................................................
+            if(eksploracja)
+			{
+				//losujesz akcję z prawdopodobieństwem epsilon przechodząc do stanu S'
+				nr_akcji_wyb = loteria.nextInt(4);
+				
+			}
+			else{
+				//1-epsilon, wykonaj akcję a o najwyższej wartości Q
+				nr_akcji_wyb=nr_akcji_Qmax;
+				
+			}
+			
 
 
             // mieszanie numerów agentów by uwzględnić asynchroniczność i przypadkowość wykonywania akcji przez agentów
@@ -146,8 +154,10 @@ public class UczenieZeWzm {
                     nr_akcji_Qmax = i;
                 }
 
-            // modyfikacja wartości użyteczności poprzedniej akcji:
-            // Q[stan.w][stan.k][nr_akcji_wyb] = ...
+			// modyfikacja wartości użyteczności poprzedniej akcji:
+			// Q[stan.w][stan.k][nr_akcji_wyb] = ...
+			double Q_S_A = Q[stan.w][stan.k][nr_akcji_wyb];
+			Q[stan.w][stan.k][nr_akcji_wyb]=(float) (Q_S_A+alfa*(nagroda+gamma*Qmax-Q_S_A));
             //..................................................
             //..................................................
             //..................................................
